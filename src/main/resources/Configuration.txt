@@ -1,5 +1,5 @@
-Path;C:\\Users\\simfede\\Documents\\Tesi\\open-data-master
-Path_destination;C:\\Users\\simfede\\Documents\\VS Project\\University - Thesis\\FromJsonToCsv\\output
+Path;C:\\Users\\{username}\\Downloads\\open-data-master
+Path_destination;C:\\Users\\{username}\\Downloads\\FromJsonToCsv\\output
 Competition_id;37
 Competition_season;90
 Team;Reading
