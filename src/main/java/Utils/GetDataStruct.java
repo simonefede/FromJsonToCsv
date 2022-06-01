@@ -1,17 +1,25 @@
 package Utils;
 
-import Models.Event;
-import Models.Lineup;
-import Models.sObject;
+import Models.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class GetDataStruct {
 
-    public static Map<Integer, List<Event>> generateEventTypePass(List<Event> eventList){
+    public static Boolean setTeamIdConfiguration(Match mt, Configuration con){
+        if(mt.getHome_team().getHome_team_name().toUpperCase().contains(con.getTeam().toUpperCase())){
+            con.setTeam_id(mt.getHome_team().getHome_team_id());
+            return true;
+        } else if(mt.getAway_team().getAway_team_name().toUpperCase().contains(con.getTeam().toUpperCase())){
+            con.setTeam_id(mt.getAway_team().getAway_team_id());
+            return true;
+        }
+        return false;
+    }
+    public static Map<Integer, List<Event>> generateEventTypePass(List<Event> eventList, Configuration con){
         Map<Integer, List<Event>> eventMapTypePass = new HashMap<>();
-        for(Event ev : filterList(eventList, 30)){
+        for(Event ev : filterList(eventList, 30, con.getTeam_id())){
             List<Event> temp;
             if(eventMapTypePass.containsKey(ev.getMatch_id())){
                 temp = eventMapTypePass.get(ev.getMatch_id());
@@ -24,9 +32,9 @@ public class GetDataStruct {
         return eventMapTypePass;
     }
 
-    public static Map<Integer, Map<Integer, sObject>> generateEventMapTypeStartingXI(List<Event> eventList){
+    public static Map<Integer, Map<Integer, sObject>> generateEventMapTypeStartingXI(List<Event> eventList, Configuration con){
         Map<Integer, Map<Integer, sObject>> eventMapTypeStartingXI = new HashMap<>();
-        for(Event ev : filterList(eventList, 35)){
+        for(Event ev : filterList(eventList, 35, con.getTeam_id())){
             Map<Integer, sObject> temp;
             if(eventMapTypeStartingXI.containsKey(ev.getMatch_id())){
                 temp = eventMapTypeStartingXI.get(ev.getMatch_id());
@@ -116,7 +124,10 @@ public class GetDataStruct {
         }
     }
 
-    private static List<Event> filterList(List<Event> eventList, Integer filterType){
-        return eventList.stream().filter(event -> event.getType().getId().equals(filterType)).collect(Collectors.toList());
+    private static List<Event> filterList(List<Event> eventList, Integer filterType, Integer filterTeam){
+        List<Event> temp = eventList.stream().filter(event -> event.getType().getId().equals(filterType)).toList();
+        if(filterType == 30) return temp.stream().filter(event -> event.getTeam().getId().equals(filterTeam)).collect(Collectors.toList());
+        else if(filterType == 35) return temp.stream().filter(event -> event.getTeam().getId().equals(filterTeam)).collect(Collectors.toList());
+        return null;
     }
 }

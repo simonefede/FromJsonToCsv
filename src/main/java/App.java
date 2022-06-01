@@ -4,7 +4,6 @@ import Models.*;
 import Utils.GetDataStruct;
 
 import static Utils.FileReadWrite.*;
-import static Utils.GetDataStruct.setPassCompletedAndPosition;
 import static Utils.ParseJson.*;
 
 public class App {
@@ -18,8 +17,14 @@ public class App {
         Configuration con = readFromFile("src/main/resources/Configuration.txt");
 
         List<Match> matchList = parseMatches(con);
-
-        System.out.println("# match to analyze: "+matchList.size());
+        if(matchList != null){
+            if(!GetDataStruct.setTeamIdConfiguration(matchList.get(0), con)){
+                exitWithError("Error getting team_id");
+            }
+            System.out.println("# match to analyze: "+matchList.size());
+        } else {
+            exitWithError("Error getting matchList");
+        }
 
         writeToCsv(matchList, null, null, headerTable1, con.getPath_destination(), "table1");
 
@@ -36,13 +41,13 @@ public class App {
 
         System.out.println("# events to analyze: "+eventList.size());
 
-        Map<Integer, List<Event>> eventMapTypePass = GetDataStruct.generateEventTypePass(eventList);
+        Map<Integer, List<Event>> eventMapTypePass = GetDataStruct.generateEventTypePass(eventList, con);
         System.out.println("# events with type = pass to analyze: "+eventMapTypePass.values().stream()
                                                                                     .mapToInt(Collection::size)
                                                                                     .sum());
-        Map<Integer, Map<Integer, sObject>> eventMapTypeStartingXI = GetDataStruct.generateEventMapTypeStartingXI(eventList);
+        Map<Integer, Map<Integer, sObject>> eventMapTypeStartingXI = GetDataStruct.generateEventMapTypeStartingXI(eventList, con);
 
-        setPassCompletedAndPosition(eventMapTypePass, eventMapTypeStartingXI);
+        GetDataStruct.setPassCompletedAndPosition(eventMapTypePass, eventMapTypeStartingXI);
 
         writeToCsv(null, eventMapTypePass, null, headerTable2, con.getPath_destination(), "table2");
 
@@ -53,10 +58,16 @@ public class App {
         exitWithoutError();
     }
 
+    private static void exitWithError(String error){
+        System.out.println(error);
+        System.exit(1);
+    }
+
     private static void exitWithoutError(){
         long endTime = System.currentTimeMillis();
         long seconds = (endTime - startTime);
         System.out.println("Program run in " + seconds + " milliseconds");
+        System.exit(0);
     }
 
 }

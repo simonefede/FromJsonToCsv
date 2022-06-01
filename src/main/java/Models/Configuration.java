@@ -7,6 +7,7 @@ public class Configuration {
     private String competition_id;
     private String competition_season;
     private String team;
+    private Integer team_id;
 
     public String getPath() {
         return this.path;
@@ -47,5 +48,9 @@ public class Configuration {
     public void setTeam(String team) {
         this.team = team;
     }
+
+    public Integer getTeam_id() { return team_id; }
+
+    public void setTeam_id(Integer team_id) { this.team_id = team_id; }
 
 }
