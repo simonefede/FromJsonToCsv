@@ -1,5 +1,3 @@
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import Models.*;
@@ -13,7 +11,8 @@ public class App {
     static final String headerTable1 = "match_id,score,team_id_home,team_name_home,team_id_away,team_name_away,end_first_half,end_second_half,total_minutes";
     static final String headerTable2 = "match_id,event_id,player_id,player_name,player_starting_role,recipient_player_id,recipient_player_name,recipient_starting_role,pass_completed";
     static final String headerTable3 = "match_id,player_id,player_name,starting_role,recipient_player_id,recipient_player_name,recipient_starting_role,total_passes_to";
-
+    static final String headerTable4 = "match_id,event_id,period,minute,player_id,player_name,position_id,position_name,replacement_id,replacement_name";
+    static final String headerTable5 = "match_id,event_id,period,minute,player_id,player_name";
     public static void main(String[] args) throws Exception {
 
         Configuration con = readFromFile("src/main/resources/Configuration.txt");
@@ -65,15 +64,19 @@ public class App {
 
         GetDataStruct.setMinutesAndSecondsInMatch(matchList, eventMapTypeHalfEnd);
 
-        writeToCsv(matchList, null, null, headerTable1, con.getPath_destination(), "table1");
+        writeToCsv(matchList, null, null ,null,null, headerTable1, con.getPath_destination(), "table1");
 
         GetDataStruct.setPassCompletedAndPosition(eventMapTypePass, eventMapTypeStartingXI);
 
-        //writeToCsv(null, eventMapTypePass, null, headerTable2, con.getPath_destination(), "table2");
+        writeToCsv(null, eventMapTypePass, null, null, null, headerTable2, con.getPath_destination(), "table2");
 
         Map<Integer, Map<Integer, Map<Integer, Integer>>> aggregatePlayer = GetDataStruct.aggregatePlayerForMatchAndCountPass(eventMapTypePass);
 
-        //writeToCsv(null, eventMapTypePass, aggregatePlayer, headerTable3, con.getPath_destination(), "table3");
+        writeToCsv(null, eventMapTypePass, null, null, aggregatePlayer, headerTable3, con.getPath_destination(), "table3");
+
+        writeToCsv(null, null, eventMapTypeSubstitution, null, null, headerTable4, con.getPath_destination(), "table4");
+
+        writeToCsv(null, null, null, eventMapTypeRedCard, null, headerTable5, con.getPath_destination(), "table5");
 
         exitWithoutError();
     }

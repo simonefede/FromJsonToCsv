@@ -31,9 +31,7 @@ public class Event {
         this.match_id = match_id;
     }
 
-    public String getId() {
-        return this.id;
-    }
+    public String getId() { return this.id; }
 
     public void setId(String id) {
         this.id = id;
@@ -147,17 +145,13 @@ public class Event {
         return this.player_starting_role;
     }
 
-    public void setPlayer_starting_role(sObject player_starting_role) {
-        this.player_starting_role = player_starting_role;
-    }
+    public void setPlayer_starting_role(sObject player_starting_role) { this.player_starting_role = player_starting_role; }
 
     public sObject getRecipient_starting_role() {
         return this.recipient_starting_role;
     }
 
-    public void setRecipient_starting_role(sObject recipient_starting_role) {
-        this.recipient_starting_role = recipient_starting_role;
-    }
+    public void setRecipient_starting_role(sObject recipient_starting_role) { this.recipient_starting_role = recipient_starting_role; }
 
     public Boolean isPass_completed() {
         return this.pass_completed;
@@ -171,8 +165,7 @@ public class Event {
         this.pass_completed = pass_completed;
     }
 
-    @Override
-    public String toString(){
+    public String toStringPass(){
         StringBuilder dataBuilder = new StringBuilder();
         appendFieldValue(dataBuilder, String.valueOf(match_id));
         appendFieldValue(dataBuilder, id);
@@ -186,11 +179,36 @@ public class Event {
         return dataBuilder.toString();
     }
 
+    public String toStringSubstitution(){
+        StringBuilder dataBuilder = assignToStringBuilder();
+        appendFieldValue(dataBuilder, String.valueOf(position.getId()));
+        appendFieldValue(dataBuilder, position.getName());
+        appendFieldValue(dataBuilder, String.valueOf(substitution.getReplacement().getId()));
+        appendFieldValue(dataBuilder, substitution.getReplacement().getName());
+        return dataBuilder.toString();
+    }
+
+    public String toStringRedCard(){
+        StringBuilder dataBuilder = assignToStringBuilder();
+        return dataBuilder.toString();
+    }
+
+    private StringBuilder assignToStringBuilder() {
+        StringBuilder dataBuilder = new StringBuilder();
+        appendFieldValue(dataBuilder, String.valueOf(match_id));
+        appendFieldValue(dataBuilder, id);
+        appendFieldValue(dataBuilder, String.valueOf(period));
+        appendFieldValue(dataBuilder, String.valueOf(minute));
+        appendFieldValue(dataBuilder, String.valueOf(player.getId()));
+        appendFieldValue(dataBuilder, player.getName());
+        return dataBuilder;
+    }
+
     private void appendFieldValue(StringBuilder dataBuilder, String fieldValue) {
         if(fieldValue != null) {
             dataBuilder.append(fieldValue).append(",");
         } else {
-            dataBuilder.append("").append(",");
+            dataBuilder.append(",");
         }
     }
 

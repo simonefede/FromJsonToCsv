@@ -109,7 +109,7 @@ public class Match {
         if(fieldValue != null) {
             dataBuilder.append(fieldValue).append(",");
         } else {
-            dataBuilder.append("").append(",");
+            dataBuilder.append(",");
         }
     }
 

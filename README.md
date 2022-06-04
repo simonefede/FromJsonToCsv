@@ -11,6 +11,7 @@ Proceed with the modification of the "Configuration.txt" file (the separator is 
 - `Competition_id`: id of the competition to be processed on (37 = FA Women's Super League) 
 - `Competition_season`: id of the season to be processed on (90 = 2020/2021)
 - `Team`: name of the team on which to perform the analyzes (not case sensitive)
+- The last five fields: `Id_event_type_pass`, `Id_event_type_starting_xi`, `Id_event_type_substitution`, `Id_event_type_red_card`, `Id_event_type_half_end` will only need to be changed if they are changed by statsbomb
 
 ## Folder Structure
 

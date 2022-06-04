@@ -8,6 +8,11 @@ public class Configuration {
     private String competition_season;
     private String team;
     private Integer team_id;
+    private Integer Id_event_type_pass;
+    private Integer Id_event_type_starting_xi;
+    private Integer Id_event_type_substitution;
+    private Integer Id_event_type_red_card;
+    private Integer Id_event_type_half_end;
 
     public String getPath() {
         return this.path;
@@ -53,4 +58,23 @@ public class Configuration {
 
     public void setTeam_id(Integer team_id) { this.team_id = team_id; }
 
+    public Integer getId_event_type_pass() { return Id_event_type_pass; }
+
+    public void setId_event_type_pass(Integer id_event_type_pass) {this.Id_event_type_pass = id_event_type_pass; }
+
+    public Integer getId_event_type_starting_xi() { return Id_event_type_starting_xi; }
+
+    public void setId_event_type_starting_xi(Integer id_event_type_starting_xi) { this.Id_event_type_starting_xi = id_event_type_starting_xi; }
+
+    public Integer getId_event_type_substitution() { return Id_event_type_substitution; }
+
+    public void setId_event_type_substitution(Integer id_event_type_substitution) { this.Id_event_type_substitution = id_event_type_substitution; }
+
+    public Integer getId_event_type_red_card() { return Id_event_type_red_card; }
+
+    public void setId_event_type_red_card(Integer id_event_type_red_card) { this.Id_event_type_red_card = id_event_type_red_card; }
+
+    public Integer getId_event_type_half_end() { return Id_event_type_half_end; }
+
+    public void setId_event_type_half_end(Integer Id_event_type_half_end) { this.Id_event_type_half_end = Id_event_type_half_end; }
 }

@@ -17,9 +17,10 @@ public class GetDataStruct {
         }
         return false;
     }
+
     public static Map<Integer, List<Event>> generateEventTypePass(List<Event> eventList, Configuration con){
         Map<Integer, List<Event>> eventMapTypePass = new HashMap<>();
-        for(Event ev : filterList(eventList, 30, con.getTeam_id())){
+        for(Event ev : filterList(eventList, con.getId_event_type_pass(), con.getTeam_id())){
             populateMapListEvent(eventMapTypePass, ev);
         }
         return eventMapTypePass;
@@ -27,7 +28,7 @@ public class GetDataStruct {
 
     public static Map<Integer, Map<Integer, sObject>> generateEventMapTypeStartingXI(List<Event> eventList, Configuration con){
         Map<Integer, Map<Integer, sObject>> eventMapTypeStartingXI = new HashMap<>();
-        for(Event ev : filterList(eventList, 35, con.getTeam_id())){
+        for(Event ev : filterList(eventList, con.getId_event_type_starting_xi(), con.getTeam_id())){
             Map<Integer, sObject> temp;
             if(eventMapTypeStartingXI.containsKey(ev.getMatch_id())){
                 temp = eventMapTypeStartingXI.get(ev.getMatch_id());
@@ -49,7 +50,7 @@ public class GetDataStruct {
 
     public static Map<Integer, List<Event>> generateEventMapTypeSubstitution(List<Event> eventList, Configuration con){
         Map<Integer, List<Event>> eventMapTypeSubstitution = new HashMap<>();
-        for(Event ev : filterList(eventList, 19, con.getTeam_id())){
+        for(Event ev : filterList(eventList, con.getId_event_type_substitution(), con.getTeam_id())){
             populateMapListEvent(eventMapTypeSubstitution, ev);
         }
         return eventMapTypeSubstitution;
@@ -57,7 +58,7 @@ public class GetDataStruct {
 
     public static Map<Integer, List<Event>> generateEventMapTypeRedCard(List<Event> eventList, Configuration con){
         Map<Integer, List<Event>> eventMapTypeRedCard = new HashMap<>();
-        for(Event ev : filterList(eventList, 67, con.getTeam_id())){
+        for(Event ev : filterList(eventList, con.getId_event_type_red_card(), con.getTeam_id())){
             populateMapListEvent(eventMapTypeRedCard, ev);
         }
         return eventMapTypeRedCard;
@@ -65,7 +66,7 @@ public class GetDataStruct {
 
     public static Map<Integer, List<Event>> generateEventMapTypeHalfEnd(List<Event> eventList, Configuration con){
         Map<Integer, List<Event>> eventMapTypeHalfEnd = new HashMap<>();
-        for(Event ev : filterList(eventList, 34, con.getTeam_id())){
+        for(Event ev : filterList(eventList, con.getId_event_type_half_end(), con.getTeam_id())){
             populateMapListEvent(eventMapTypeHalfEnd, ev);
         }
         return eventMapTypeHalfEnd;

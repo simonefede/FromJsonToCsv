@@ -3,3 +3,8 @@ Path_destination;C:\\Users\\{username}\\Downloads\\FromJsonToCsv\\output
 Competition_id;37
 Competition_season;90
 Team;Reading
+Id_event_type_pass;30
+Id_event_type_starting_xi;35
+Id_event_type_substitution;19
+Id_event_type_red_card;67
+Id_event_type_half_end;34

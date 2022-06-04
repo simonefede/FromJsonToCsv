@@ -5,7 +5,6 @@ public class Home_Team {
     private Integer home_team_id;
     private String home_team_name;
 
-
     public Integer getHome_team_id() {
         return this.home_team_id;
     }

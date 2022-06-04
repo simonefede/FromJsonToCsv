@@ -33,6 +33,16 @@ public class FileReadWrite {
                     con.setCompetition_season(fields[1]);
                 } else if(fields[0].compareTo("Team")==0) {
                     con.setTeam(fields[1]);
+                } else if(fields[0].compareTo("Id_event_type_pass")==0) {
+                    con.setId_event_type_pass(Integer.valueOf(fields[1]));
+                } else if(fields[0].compareTo("Id_event_type_starting_xi")==0) {
+                    con.setId_event_type_starting_xi(Integer.valueOf(fields[1]));
+                } else if(fields[0].compareTo("Id_event_type_substitution")==0) {
+                    con.setId_event_type_substitution(Integer.valueOf(fields[1]));
+                } else if(fields[0].compareTo("Id_event_type_red_card")==0) {
+                    con.setId_event_type_red_card(Integer.valueOf(fields[1]));
+                } else if(fields[0].compareTo("Id_event_type_half_end")==0) {
+                    con.setId_event_type_half_end(Integer.valueOf(fields[1]));
                 }
             }
             br.close();
@@ -43,7 +53,7 @@ public class FileReadWrite {
         return con;
     }
 
-    public static void writeToCsv(List<Match> matchList, Map<Integer, List<Event>> eventMapTypePass, Map<Integer, Map<Integer, Map<Integer, Integer>>> aggregatePlayer, String header, String path_destination, String fileName) throws IOException {
+    public static void writeToCsv(List<Match> matchList, Map<Integer, List<Event>> eventMapTypePass, Map<Integer, List<Event>> eventMapTypeSubstitution, Map<Integer, List<Event>> eventMapTypeRedCard, Map<Integer, Map<Integer, Map<Integer, Integer>>> aggregatePlayer, String header, String path_destination, String fileName) throws IOException {
         PrintWriter writer = new PrintWriter(path_destination+"\\"+fileName+".csv");
         writer.println(header);
         if(matchList != null){
@@ -51,14 +61,28 @@ public class FileReadWrite {
                 writer.println(sample.toString());
             }
         }
-        if(matchList == null && eventMapTypePass != null && aggregatePlayer == null){
+        if(matchList == null && eventMapTypePass != null && eventMapTypeSubstitution == null && eventMapTypeRedCard == null && aggregatePlayer == null){
             for(Integer key : eventMapTypePass.keySet()){
                 for (Event sample : eventMapTypePass.get(key)) {
-                    writer.println(sample.toString());
+                    writer.println(sample.toStringPass());
                 }
             }
         }
-        if(matchList == null && eventMapTypePass != null && aggregatePlayer != null){
+        if(matchList == null && eventMapTypePass == null && eventMapTypeSubstitution != null && eventMapTypeRedCard == null && aggregatePlayer == null){
+            for(Integer key : eventMapTypeSubstitution.keySet()){
+                for (Event sample : eventMapTypeSubstitution.get(key)) {
+                    writer.println(sample.toStringSubstitution());
+                }
+            }
+        }
+        if(matchList == null && eventMapTypePass == null && eventMapTypeSubstitution == null && eventMapTypeRedCard != null && aggregatePlayer == null){
+            for(Integer key : eventMapTypeRedCard.keySet()){
+                for (Event sample : eventMapTypeRedCard.get(key)) {
+                    writer.println(sample.toStringRedCard());
+                }
+            }
+        }
+        if(matchList == null && eventMapTypePass != null && eventMapTypeSubstitution == null && eventMapTypeRedCard == null && aggregatePlayer != null){
             for(Integer key : eventMapTypePass.keySet()){
                 if(aggregatePlayer.containsKey(key)){
                     for(Event ev : eventMapTypePass.get(key).stream().filter(Event::isPass_completed).toList()){
