@@ -15,6 +15,10 @@ public class Event {
     private String[] related_events;
     private Tactic tactics;
     private Pass pass;
+    private int period;
+    private int minute;
+    private int second;
+    private Substitution substitution;
     private sObject player_starting_role;
     private sObject recipient_starting_role;
     private Boolean pass_completed;
@@ -122,6 +126,22 @@ public class Event {
     public void setPass(Pass pass) {
         this.pass = pass;
     }
+
+    public int getPeriod() { return period; }
+
+    public void setPeriod(int period) { this.period = period; }
+
+    public int getMinute() { return minute; }
+
+    public void setMinute(int minute) { this.minute = minute; }
+
+    public int getSecond() { return second; }
+
+    public void setSecond(int second) { this.second = second; }
+
+    public Substitution getSubstitution() { return substitution; }
+
+    public void setSubstitution(Substitution substitution) { this.substitution = substitution; }
 
     public sObject getPlayer_starting_role() {
         return this.player_starting_role;

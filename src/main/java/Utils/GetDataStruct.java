@@ -20,14 +20,7 @@ public class GetDataStruct {
     public static Map<Integer, List<Event>> generateEventTypePass(List<Event> eventList, Configuration con){
         Map<Integer, List<Event>> eventMapTypePass = new HashMap<>();
         for(Event ev : filterList(eventList, 30, con.getTeam_id())){
-            List<Event> temp;
-            if(eventMapTypePass.containsKey(ev.getMatch_id())){
-                temp = eventMapTypePass.get(ev.getMatch_id());
-            } else {
-                temp = new LinkedList<>();
-            }
-            temp.add(ev);
-            eventMapTypePass.put(ev.getMatch_id(), temp);
+            populateMapListEvent(eventMapTypePass, ev);
         }
         return eventMapTypePass;
     }
@@ -52,6 +45,41 @@ public class GetDataStruct {
             eventMapTypeStartingXI.put(ev.getMatch_id(), temp);
         }
         return eventMapTypeStartingXI;
+    }
+
+    public static Map<Integer, List<Event>> generateEventMapTypeSubstitution(List<Event> eventList, Configuration con){
+        Map<Integer, List<Event>> eventMapTypeSubstitution = new HashMap<>();
+        for(Event ev : filterList(eventList, 19, con.getTeam_id())){
+            populateMapListEvent(eventMapTypeSubstitution, ev);
+        }
+        return eventMapTypeSubstitution;
+    }
+
+    public static Map<Integer, List<Event>> generateEventMapTypeRedCard(List<Event> eventList, Configuration con){
+        Map<Integer, List<Event>> eventMapTypeRedCard = new HashMap<>();
+        for(Event ev : filterList(eventList, 67, con.getTeam_id())){
+            populateMapListEvent(eventMapTypeRedCard, ev);
+        }
+        return eventMapTypeRedCard;
+    }
+
+    public static Map<Integer, List<Event>> generateEventMapTypeHalfEnd(List<Event> eventList, Configuration con){
+        Map<Integer, List<Event>> eventMapTypeHalfEnd = new HashMap<>();
+        for(Event ev : filterList(eventList, 34, con.getTeam_id())){
+            populateMapListEvent(eventMapTypeHalfEnd, ev);
+        }
+        return eventMapTypeHalfEnd;
+    }
+
+    private static void populateMapListEvent(Map<Integer, List<Event>> eventMapTypeRedCard, Event ev) {
+        List<Event> temp;
+        if(eventMapTypeRedCard.containsKey(ev.getMatch_id())){
+            temp = eventMapTypeRedCard.get(ev.getMatch_id());
+        } else {
+            temp = new LinkedList<>();
+        }
+        temp.add(ev);
+        eventMapTypeRedCard.put(ev.getMatch_id(), temp);
     }
 
     public static Map<Integer, Map<Integer, Map<Integer, Integer>>> aggregatePlayerForMatchAndCountPass(Map<Integer, List<Event>> eventMapTypePass){
@@ -114,6 +142,34 @@ public class GetDataStruct {
         }
     }
 
+    public static void setMinutesAndSecondsInMatch(List<Match> matchList, Map<Integer, List<Event>> eventMapTypeHalfEnd){
+        for(Match mt : matchList){
+            if(eventMapTypeHalfEnd.containsKey(mt.getMatch_id())){
+                for(Event ev : eventMapTypeHalfEnd.get(mt.getMatch_id())){
+                    if(ev.getPeriod()==1){
+                        mt.setEnd_first_time_minutes(ev.getMinute());
+                        mt.setEnd_first_time_seconds(ev.getSecond());
+                        mt.setEnd_first_time(mt.getEnd_first_time_minutes()+":"+String.format("%02d", mt.getEnd_first_time_seconds()));
+                    } else if(ev.getPeriod()==2){
+                        mt.setEnd_second_time_minutes(ev.getMinute());
+                        mt.setEnd_second_time_seconds(ev.getSecond());
+                        mt.setEnd_second_time(mt.getEnd_second_time_minutes()+":"+String.format("%02d", mt.getEnd_second_time_seconds()));
+                    }
+                    int total_minutes;
+                    int total_seconds;
+                    if(mt.getEnd_first_time_seconds() + mt.getEnd_second_time_seconds() > 60) {
+                        total_minutes = mt.getEnd_first_time_minutes()+mt.getEnd_second_time_minutes()-44;
+                        total_seconds = mt.getEnd_first_time_seconds() + mt.getEnd_second_time_seconds()-60;
+                    } else {
+                        total_minutes = mt.getEnd_first_time_minutes()+mt.getEnd_second_time_minutes()-45;
+                        total_seconds = mt.getEnd_first_time_seconds() + mt.getEnd_second_time_seconds();
+                    }
+                    mt.setTotal_minutes(total_minutes+":"+String.format("%02d", total_seconds));
+                }
+            }
+        }
+    }
+
     private static void playerInStartXI(Map<Integer, Map<Integer, sObject>> eventMapTypeStartingXI, Event ev) {
         if(eventMapTypeStartingXI.get(ev.getMatch_id()).containsKey(ev.getPlayer().getId())){
             ev.setPlayer_starting_role(eventMapTypeStartingXI.get(ev.getMatch_id()).get(ev.getPlayer().getId()));
@@ -125,9 +181,7 @@ public class GetDataStruct {
     }
 
     private static List<Event> filterList(List<Event> eventList, Integer filterType, Integer filterTeam){
-        List<Event> temp = eventList.stream().filter(event -> event.getType().getId().equals(filterType)).toList();
-        if(filterType == 30) return temp.stream().filter(event -> event.getTeam().getId().equals(filterTeam)).collect(Collectors.toList());
-        else if(filterType == 35) return temp.stream().filter(event -> event.getTeam().getId().equals(filterTeam)).collect(Collectors.toList());
-        return null;
+        return eventList.stream().filter(event -> event.getType().getId().equals(filterType)).toList()
+                .stream().filter(event -> event.getTeam().getId().equals(filterTeam)).collect(Collectors.toList());
     }
 }
